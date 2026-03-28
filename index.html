@@ -282,48 +282,48 @@
   // DADOS: frases e tipos por linha
   // =====================================================
   const linhas = [
-    [
-      { texto: "Objetiva e incisiva\nCom tendencia a agir depressa", tipo: 8 },
-      { texto: "Pouco emotiva\nAnalitica e racional", tipo: 5 },
-      { texto: "Simpatica e atenta\nSinto prazer em ajudar", tipo: 2 },
+    [ // 1ª linha
+      { texto: "Objetiva e incisiva\nCom tendência a agir depressa", tipo: 8 },
+      { texto: "Pouco emotiva\nAnalítica e racional", tipo: 5 },
+      { texto: "Simpática e atenta\nSinto prazer em ajudar", tipo: 2 },
       { texto: "Prevenida\nCautelosa", tipo: 6 },
-      { texto: "Entusiasta\nDe espirito leve e positivo", tipo: 7 },
+      { texto: "Entusiasta\nDe espírito leve e positivo", tipo: 7 },
       { texto: "Rigorosa\nAtenta aos pormenores", tipo: 1 },
-      { texto: "Foco em resultados\nAge com rapidez e decisao", tipo: 3 },
-      { texto: "Emocionalmente sensivel\nAtenta aos detalhes e rigorosa", tipo: 4 },
-      { texto: "Calma e adaptavel\nTem dificuldade em dizer nao", tipo: 9 }
+      { texto: "Foco em resultados\nAge com rapidez e decisão", tipo: 3 },
+      { texto: "Emocionalmente sensível\nAtenta aos detalhes e rigorosa", tipo: 4 },
+      { texto: "Calma e adaptável\nTem dificuldade em dizer não", tipo: 9 }
     ],
-    [
-      { texto: "Gosto de manter varias opcoes em aberto\nFoco no prazer e na novidade", tipo: 7 },
+    [ // 2ª linha
+      { texto: "Gosto de manter várias opções em aberto\nFoco no prazer e na novidade", tipo: 7 },
       { texto: "Ritmo intenso\nFoco em ter sucesso e reconhecimento", tipo: 3 },
       { texto: "Paciente\nTende a mediar entre pessoas", tipo: 9 },
       { texto: "Idealista\nSonhadora e criativa", tipo: 4 },
-      { texto: "Foco no dever\nCom tendencia ao perfeccionismo", tipo: 1 },
+      { texto: "Foco no dever\nCom tendência ao perfeccionismo", tipo: 1 },
       { texto: "Desafiadora\nDireta e sem rodeios", tipo: 8 },
       { texto: "Gosto de estar mais recolhida\nIndependente", tipo: 5 },
-      { texto: "Gosta de ajudar\nComunicativa e proxima", tipo: 2 },
-      { texto: "Antecipa cenarios\nProcura seguranca e certezas", tipo: 6 }
+      { texto: "Gosta de ajudar\nComunicativa e próxima", tipo: 2 },
+      { texto: "Antecipa cenários\nProcura segurança e certezas", tipo: 6 }
     ],
-    [
+    [ // 3ª linha
       { texto: "Criativa\nFoco em possibilidades futuras", tipo: 7 },
-      { texto: "Focada na harmonia\nDiplomatica nas relacoes", tipo: 9 },
+      { texto: "Focada na harmonia\nDiplomática nas relações", tipo: 9 },
       { texto: "Emocional\nOrientada para ajudar os outros", tipo: 2 },
-      { texto: "Focada na seguranca\nProcura estabilidade e certezas", tipo: 6 },
-      { texto: "Focada no controlo\nTem certezas e convicoes fortes", tipo: 8 },
-      { texto: "Focada nas emocoes\nProcura ser reconhecida e valorizada", tipo: 4 },
+      { texto: "Focada na segurança\nProcura estabilidade e certezas", tipo: 6 },
+      { texto: "Focada no controlo\nTem certezas e convicções fortes", tipo: 8 },
+      { texto: "Focada nas emoções\nProcura ser reconhecida e valorizada", tipo: 4 },
       { texto: "Focada no planeamento\nPreocupa-se com o conhecimento", tipo: 5 },
       { texto: "Focada na disciplina\nCuidadosa e rigorosa", tipo: 1 },
       { texto: "Focada nas metas\nPreocupa-se com a imagem", tipo: 3 }
     ],
-    [
+    [ // 4ª linha
       { texto: "Foco no consenso\nPreocupa-se com os outros", tipo: 9 },
-      { texto: "Focada na concretizacao\nAtenta ao controlo e aos resultados", tipo: 8 },
+      { texto: "Focada na concretização\nAtenta ao controlo e aos resultados", tipo: 8 },
       { texto: "Focada nas metas\nValoriza resultados e boa imagem", tipo: 3 },
-      { texto: "Vive intensamente as emocoes\nFoco nas pessoas", tipo: 4 },
-      { texto: "Racionaliza as emocoes\nFoco nas diferentes opcoes", tipo: 7 },
-      { texto: "Reprime as emocoes\nValoriza processos e procedimentos", tipo: 1 },
+      { texto: "Vive intensamente as emoções\nFoco nas pessoas", tipo: 4 },
+      { texto: "Racionaliza as emoções\nFoco nas diferentes opções", tipo: 7 },
+      { texto: "Reprime as emoções\nValoriza processos e procedimentos", tipo: 1 },
       { texto: "Focada nos outros\nAdapta-se conforme as necessidades dos outros", tipo: 2 },
-      { texto: "Foco na seguranca\nTesta as pessoas antes de confiar", tipo: 6 },
+      { texto: "Foco na segurança\nTesta as pessoas antes de confiar", tipo: 6 },
       { texto: "Foco no conhecimento\nTende a isolar-se dos outros", tipo: 5 }
     ]
   ];
@@ -331,6 +331,7 @@
   const SELECOES_POR_LINHA = 3;
   const FORMSPREE_URL = "https://formspree.io/f/mwvwvlrb";
 
+  // Estado: quais índices estão selecionados por linha
   const selecoes = linhas.map(() => new Set());
 
   const container = document.getElementById("linhasContainer");
@@ -341,8 +342,12 @@
   const successScreen = document.getElementById("successScreen");
   const mainContent = document.getElementById("mainContent");
 
+  // =====================================================
+  // RENDERIZAR LINHAS E CARTAS
+  // =====================================================
   function render() {
     container.innerHTML = "";
+
     linhas.forEach((linha, iLinha) => {
       const linhaDiv = document.createElement("div");
       linhaDiv.className = "linha";
@@ -410,7 +415,7 @@
       erroDiv.textContent = "";
     } else {
       if (set.size >= SELECOES_POR_LINHA) {
-        erroDiv.textContent = "Ja escolheste " + SELECOES_POR_LINHA + " opcoes nesta linha. Remove uma para escolher outra.";
+        erroDiv.textContent = "Já escolheste " + SELECOES_POR_LINHA + " opções nesta linha. Remove uma para escolher outra.";
         return;
       }
       set.add(iItem);
@@ -438,15 +443,22 @@
     contador.textContent = set.size + " / " + SELECOES_POR_LINHA + " selecionadas";
   }
 
+  // =====================================================
+  // GERAR RESULTADO (só vai para o teu email)
+  // =====================================================
   function gerarResultado() {
     const partes = [];
+
     for (let i = 0; i < linhas.length; i++) {
       if (selecoes[i].size !== SELECOES_POR_LINHA) return null;
+
       const tipos = Array.from(selecoes[i])
         .sort((a, b) => a - b)
         .map(idx => linhas[i][idx].tipo);
-      partes.push((i + 1) + "a linha: " + tipos.join(", "));
+
+      partes.push((i + 1) + "ª linha → " + tipos.join(", "));
     }
+
     return partes.join(" | ");
   }
 
@@ -460,22 +472,27 @@
     globalError.classList.add("hidden");
   }
 
+  // =====================================================
+  // SUBMISSÃO
+  // =====================================================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     esconderErroGlobal();
 
     const resultado = gerarResultado();
+
     if (!resultado) {
-      mostrarErroGlobal("Por favor, escolhe exatamente 3 opcoes em cada um dos 4 blocos antes de enviar.");
+      mostrarErroGlobal("Por favor, escolhe exatamente 3 opções em cada uma das 4 linhas antes de enviar.");
       return;
     }
 
     resultadoCampo.value = resultado;
     submitBtn.disabled = true;
-    submitBtn.textContent = "A enviar...";
+    submitBtn.textContent = "A enviar…";
 
     try {
       const formData = new FormData(form);
+
       const response = await fetch(FORMSPREE_URL, {
         method: "POST",
         body: formData,
@@ -483,20 +500,22 @@
       });
 
       if (response.ok) {
+        // Esconde o teste e mostra a mensagem de sucesso
         mainContent.classList.add("hidden");
         successScreen.classList.add("visible");
       } else {
         mostrarErroGlobal("Ocorreu um erro ao enviar. Por favor, tenta novamente.");
         submitBtn.disabled = false;
-        submitBtn.textContent = "Enviar respostas";
+        submitBtn.textContent = "Enviar respostas ➜";
       }
     } catch (err) {
-      mostrarErroGlobal("Sem ligacao a internet. Verifica a tua ligacao e tenta novamente.");
+      mostrarErroGlobal("Sem ligação à internet. Verifica a tua ligação e tenta novamente.");
       submitBtn.disabled = false;
-      submitBtn.textContent = "Enviar respostas";
+      submitBtn.textContent = "Enviar respostas ➜";
     }
   });
 
+  // Arranque
   render();
 </script>
 </body>
