@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sessão 0 – Assessment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --card-bg: #151821;
+      --accent: #f4a261;
+      --accent-soft: rgba(244,162,97,0.18);
+      --text: #f5f5f5;
+      --muted: #aaa;
+      --error: #e76f51;
+      --ok: #2a9d8f;
+      --border-radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #22263a 0, #050608 55%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 960px;
+      background: rgba(9,11,20,0.94);
+      border-radius: 18px;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.65);
+      padding: 32px 24px 28px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    header { margin-bottom: 24px; }
+
+    header h1 {
+      font-size: 1.3rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    header h2 {
+      font-size: 1rem;
+      color: var(--text);
+      opacity: 0.85;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 4px;
+    }
+
+    .linha {
+      margin-top: 20px;
+      padding: 16px 14px 14px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top left, rgba(244,162,97,0.05), rgba(10,11,18,0.9));
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .linha-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .linha-header h3 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+    }
+
+    .linha-header span {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    @media (min-width: 650px) {
+      .cards { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+
+    .card {
+      border-radius: var(--border-radius);
+      background: var(--card-bg);
+      padding: 10px 10px 9px;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      user-select: none;
+    }
+
+    .card:hover {
+      border-color: rgba(244,162,97,0.5);
+      box-shadow: 0 0 0 1px rgba(244,162,97,0.4);
+      transform: translateY(-1px);
+    }
+
+    .card.selected {
+      background: linear-gradient(135deg, var(--accent-soft), rgba(15,17,26,1));
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(244,162,97,0.7);
+    }
+
+    .card-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: all 0.15s;
+    }
+
+    .card.selected .card-dot {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .card-text { flex: 1; white-space: pre-line; }
+
+    .linha-error {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--error);
+      min-height: 16px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .footer-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      width: 100%;
+      line-height: 1.5;
+    }
+
+    .submit-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 28px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: #111;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.5);
+      transition: all 0.18s ease-out;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      background: #f6a84f;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.6);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .global-error {
+      font-size: 0.82rem;
+      color: var(--error);
+      width: 100%;
+    }
+
+    .success-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 20px;
+      gap: 16px;
+    }
+
+    .success-screen.visible { display: flex; }
+
+    .success-icon {
+      font-size: 3rem;
+      color: var(--ok);
+    }
+
+    .success-screen h2 {
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    .success-screen p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 420px;
+      line-height: 1.6;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ECRÃ DE SUCESSO (só aparece depois do envio) -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2>Respostas enviadas!</h2>
+    <p>
+      Obrigada pela tua participação.<br>
+      As tuas respostas foram recebidas e serão trabalhadas na sessão.<br><br>
+      Até breve.
+    </p>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL DO TESTE -->
+  <div id="mainContent">
+    <header>
+      <h1>Sessão 0 — Assessment</h1>
+      <h2>Apuramento de perfil de personalidade</h2>
+      <p>Em cada linha, escolhe as <strong>3 opções</strong> com que mais te identificas neste momento.</p>
+      <p>Não há respostas certas ou erradas. Responde de forma espontânea e sincera.</p>
+    </header>
+
+    <form id="assessmentForm">
+      <!-- Campo escondido que vai levar os resultados para o teu email -->
+      <input type="hidden" name="resultado" id="resultadoCampo" />
+
+      <div id="linhasContainer"></div>
+
+      <div class="footer">
+        <p class="footer-note">
+          As tuas respostas são partilhadas apenas com a facilitadora e serão interpretadas na sessão. Não verás resultados ou números nesta página.
+        </p>
+        <p class="global-error hidden" id="globalError"></p>
+        <button type="submit" class="submit-btn" id="submitBtn">
+          Enviar respostas ➜
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<script>
+  // =====================================================
+  // DADOS: frases e tipos por linha
+  // =====================================================
+  const linhas = [
+    [ // 1ª linha
+      { texto: "Frontal e Direta/o\nOrientada/o para ação", tipo: 8 },
+      { texto: "Fria/o Emocionalmente\nAnalitica/o", tipo: 5 },
+      { texto: "Simpatica/o e disponível\nGosto por ajuda", tipo: 2 },
+      { texto: "Precavida/o\nCautelosa/o", tipo: 6 },
+      { texto: "Entusiasta\nOtimista", tipo: 7 },
+      { texto: "Detalhada/o\nPerfeccionista", tipo: 1 },
+      { texto: "Foco em metas e resultados\nOrientada/o para a ação", tipo: 3 },
+      { texto: "Sensível Emocionalmente\nPerfeccionista e detalhista", tipo: 4 },
+      { texto: "Calma/o e fléxivel\nDificuldade em dizer Não", tipo: 9 },
+    ],
+    [ // 2ª linha
+      { texto: "Muitas opções\nFoco no prazer", tipo: 7 },
+      { texto: "Ritmo acelerado\nFoco no sucesso", tipo: 3 },
+      { texto: "Paciente\nMediador", tipo: 9 },
+      { texto: "Idealista\nSonhadora", tipo: 4 },
+      { texto: "Foco no dever\nPerfeccionista", tipo: 1 },
+      { texto: "Desafiadora\nFrontal e direta/o", tipo: 8 },
+      { texto: "Isolado\nIndependente", tipo: 5 },
+      { texto: "Gosta de ajudar\nComunicativa/o", tipo: 2 },
+      { texto: "Antecipa cenários\nProcura certeza", tipo: 6 },
+    ],
+    [ // 3ª linha
+      { texto: "Criativa/o\nFoco em opções futuras", tipo: 7 },
+      { texto: "Foco na Harmonia\nDiplomata", tipo: 9 },
+      { texto: "Emocional\nFoco em ajudar", tipo: 2 },
+      { texto: "Foco na segurança\nProcura certezas", tipo: 6 },
+      { texto: "Foco no controlo\nTem certezas", tipo: 8 },
+      { texto: "Foco nas emoções\nProcura reconhecimento", tipo: 4 },
+      { texto: "Foco no planeamento\nPreocupação com conhecimento", tipo: 5 },
+      { texto: "Foco na disciplina\nPreocupação com rigor", tipo: 1 },
+      { texto: "Foco nas metas\nPreocupação com imagem", tipo: 3 },
+    ],
+    [ // 4ª linha
+      { texto: "Foco no consenso\nPreocupação com outros", tipo: 9 },
+      { texto: "Foco na concretização\nPreocupação com controlo", tipo: 8 },
+      { texto: "Foco nas metas\nPreocupação com imagem", tipo: 3 },
+      { texto: "Vive as emoções\nFoco nas pessoas", tipo: 4 },
+      { texto: "Racionaliza emoções\nFoco nas opções", tipo: 7 },
+      { texto: "Reprime as emoções\nFoco nos processos", tipo: 1 },
+      { texto: "Foco nos outros\nAdapta-se pelos outros", tipo: 2 },
+      { texto: "Foco na segurança\nTesta os outros para poder confiar", tipo: 6 },
+      { texto: "Foco no conhecimento\nIsola-se dos outros", tipo: 5 },
+    ]
+  ];
+
+  const SELECOES_POR_LINHA = 3;
+  const FORMSPREE_URL = "https://formspree.io/f/mwvwvlrb";
+
+  // Estado: quais índices estão selecionados por linha
+  const selecoes = linhas.map(() => new Set());
+
+  const container = document.getElementById("linhasContainer");
+  const form = document.getElementById("assessmentForm");
+  const resultadoCampo = document.getElementById("resultadoCampo");
+  const submitBtn = document.getElementById("submitBtn");
+  const globalError = document.getElementById("globalError");
+  const successScreen = document.getElementById("successScreen");
+  const mainContent = document.getElementById("mainContent");
+
+  // =====================================================
+  // RENDERIZAR LINHAS E CARTAS
+  // =====================================================
+  function render() {
+    container.innerHTML = "";
+
+    linhas.forEach((linha, iLinha) => {
+      const linhaDiv = document.createElement("div");
+      linhaDiv.className = "linha";
+
+      const header = document.createElement("div");
+      header.className = "linha-header";
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = `Linha ${iLinha + 1}`;
+
+      const contador = document.createElement("span");
+      contador.id = `contador-${iLinha}`;
+      contador.textContent = `${selecoes[iLinha].size} / ${SELECOES_POR_LINHA} selecionadas`;
+
+      header.appendChild(titulo);
+      header.appendChild(contador);
+
+      const cardsDiv = document.createElement("div");
+      cardsDiv.className = "cards";
+
+      linha.forEach((item, iItem) => {
+        const card = document.createElement("div");
+        card.className = "card" + (selecoes[iLinha].has(iItem) ? " selected" : "");
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+
+        const dot = document.createElement("div");
+        dot.className = "card-dot";
+
+        const txt = document.createElement("div");
+        txt.className = "card-text";
+        txt.textContent = item.texto;
+
+        card.appendChild(dot);
+        card.appendChild(txt);
+
+        card.addEventListener("click", () => toggleCard(iLinha, iItem));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggleCard(iLinha, iItem);
+          }
+        });
+
+        cardsDiv.appendChild(card);
+      });
+
+      const erroDiv = document.createElement("div");
+      erroDiv.className = "linha-error";
+      erroDiv.id = `erro-linha-${iLinha}`;
+
+      linhaDiv.appendChild(header);
+      linhaDiv.appendChild(cardsDiv);
+      linhaDiv.appendChild(erroDiv);
+      container.appendChild(linhaDiv);
+    });
+  }
+
+  function toggleCard(iLinha, iItem) {
+    const set = selecoes[iLinha];
+    const erroDiv = document.getElementById(`erro-linha-${iLinha}`);
+
+    if (set.has(iItem)) {
+      set.delete(iItem);
+      erroDiv.textContent = "";
+    } else {
+      if (set.size >= SELECOES_POR_LINHA) {
+        erroDiv.textContent = `Já escolheste ${SELECOES_POR_LINHA} opções nesta linha. Remove uma para escolher outra.`;
+        return;
+      }
+      set.add(iItem);
+      erroDiv.textContent = "";
+    }
+
+    // Atualizar visual desta linha
+    atualizarLinha(iLinha);
+    esconderErroGlobal();
+  }
+
+  function atualizarLinha(iLinha) {
+    const linhaDiv = container.children[iLinha];
+    const cards = linhaDiv.querySelectorAll(".card");
+    const set = selecoes[iLinha];
+
+    cards.forEach((card, iItem) => {
+      if (set.has(iItem)) {
+        card.classList.add("selected");
+      } else {
+        card.classList.remove("selected");
+      }
+    });
+
+    const contador = document.getElementById(`contador-${iLinha}`);
+    contador.textContent = `${set.size} / ${SELECOES_POR_LINHA} selecionadas`;
+  }
+
+  // =====================================================
+  // GERAR RESULTADO (só vai para o teu email)
+  // =====================================================
+  function gerarResultado() {
+    const partes = [];
+
+    for (let i = 0; i < linhas.length; i++) {
+      if (selecoes[i].size !== SELECOES_POR_LINHA) return null;
+
+      const tipos = Array.from(selecoes[i])
+        .sort((a, b) => a - b)
+        .map(idx => linhas[i][idx].tipo);
+
+      partes.push(`${i + 1}ª linha → ${tipos.join(", ")}`);
+    }
+
+    return partes.join(" | ");
+  }
+
+  function mostrarErroGlobal(msg) {
+    globalError.textContent = msg;
+    globalError.classList.remove("hidden");
+  }
+
+  function esconderErroGlobal() {
+    globalError.textContent = "";
+    globalError.classList.add("hidden");
+  }
+
+  // =====================================================
+  // SUBMISSÃO
+  // =====================================================
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    esconderErroGlobal();
+
+    const resultado = gerarResultado();
+
+    if (!resultado) {
+      mostrarErroGlobal("Por favor, escolhe exatamente 3 opções em cada uma das 4 linhas antes de enviar.");
+      return;
+    }
+
+    resultadoCampo.value = resultado;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "A enviar…";
+
+    try {
+      const formData = new FormData(form);
+
+      const response = await fetch(FORMSPREE_URL, {
+        method: "POST",
+        body: formData,
+        headers: { "Accept": "application/json" }
+      });
+
+      if (response.ok) {
+        // Esconde o teste e mostra a mensagem de sucesso
+        mainContent.classList.add("hidden");
+        successScreen.classList.add("visible");
+      } else {
+        mostrarErroGlobal("Ocorreu um erro ao enviar. Por favor, tenta novamente.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Enviar respostas ➜";
+      }
+    } catch (err) {
+      mostrarErroGlobal("Sem ligação à internet. Verifica a tua ligação e tenta novamente.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Enviar respostas ➜";
+    }
+  });
+
+  // Arranque
+  render();
+</script>
+</body>
+</html>
